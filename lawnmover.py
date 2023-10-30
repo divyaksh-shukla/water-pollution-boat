@@ -74,13 +74,21 @@ def move_for_width(width):
 def lawnmover(width_of_boat: int):
     while(True):
         move_till_obstacle()
+        stop()
         turn_right()
+        stop()
         move_for_width(width=width_of_boat)
+        stop()
         turn_right()
+        stop()
         move_till_obstacle()
+        stop()
         turn_left()
+        stop()
         move_for_width(width=width_of_boat)
+        stop()
         turn_left()
+        stop()
 
 def setup_boat():
     ultrasonic = DistanceSensor(
