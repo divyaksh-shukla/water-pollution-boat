@@ -15,38 +15,38 @@ ultrasonic = DistanceSensor(echo=US_ECHO, trigger=US_TRIGGER, threshold_distance
 # Boat Movement
 ###############################################################################
 def move_forward():
-    GPIO.output(R_MOTOR_1,GPIO.HIGH)
-    GPIO.output(R_MOTOR_2,GPIO.LOW)
+    GPIO.output(R_MOTOR_1,GPIO.LOW)
+    GPIO.output(R_MOTOR_2,GPIO.HIGH)
 
-    GPIO.output(L_MOTOR_2,GPIO.HIGH)
     GPIO.output(L_MOTOR_1,GPIO.LOW)
+    GPIO.output(L_MOTOR_2,GPIO.HIGH)
 
 def turn_right():
     print('Turning right')
     starttime = datetime.datetime.now()
     while(datetime.datetime.now() - starttime < datetime.timedelta(milliseconds=RIGHT_TURN_MS)):
-        GPIO.output(R_MOTOR_1,GPIO.LOW)
-        GPIO.output(R_MOTOR_2,GPIO.HIGH)
+        GPIO.output(R_MOTOR_1,GPIO.HIGH)
+        GPIO.output(R_MOTOR_2,GPIO.LOW)
 
-        GPIO.output(L_MOTOR_2,GPIO.LOW)
         GPIO.output(L_MOTOR_1,GPIO.LOW)
+        GPIO.output(L_MOTOR_2,GPIO.HIGH)
     
 def turn_left():
     print('Turning left')
     starttime = datetime.datetime.now()
     while(datetime.datetime.now() - starttime < datetime.timedelta(milliseconds=LEFT_TURN_MS)):
-        GPIO.output(R_MOTOR_1,GPIO.HIGH)
-        GPIO.output(R_MOTOR_2,GPIO.LOW)
+        GPIO.output(R_MOTOR_1,GPIO.LOW)
+        GPIO.output(R_MOTOR_2,GPIO.HIGH)
 
+        GPIO.output(L_MOTOR_1,GPIO.HIGH)
         GPIO.output(L_MOTOR_2,GPIO.LOW)
-        GPIO.output(L_MOTOR_1,GPIO.LOW)
     
 def move_back():
-    GPIO.output(R_MOTOR_1,GPIO.LOW)
-    GPIO.output(R_MOTOR_2,GPIO.HIGH)
+    GPIO.output(R_MOTOR_1,GPIO.HIGH)
+    GPIO.output(R_MOTOR_2,GPIO.LOW)
 
-    GPIO.output(L_MOTOR_2,GPIO.LOW)
     GPIO.output(L_MOTOR_1,GPIO.HIGH)
+    GPIO.output(L_MOTOR_2,GPIO.LOW)
 
 def stop():
     GPIO.output(R_MOTOR_1,GPIO.LOW)
@@ -78,7 +78,7 @@ def distance_covered():
 def move_for_width(width):
     print('moving forward')
     starttime = datetime.datetime.now()
-    while (datetime.datetime.now() - starttime < datetime.timedelta(milliseconds=BOAT_WIDTH_MS) ande not(obstacle_detected())):
+    while (datetime.datetime.now() - starttime < datetime.timedelta(milliseconds=BOAT_WIDTH_MS) and not(obstacle_detected())):
         sys.stdout.write("\r"+"Distance: "+str(ultrasonic.distance))
         sys.stdout.flush()
         move_forward()

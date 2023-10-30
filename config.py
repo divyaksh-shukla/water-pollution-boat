@@ -1,12 +1,12 @@
 import RPi.GPIO as GPIO
 
 # Right Motor
-R_MOTOR_1 = 18
-R_MOTOR_2 = 27
+R_MOTOR_1 = 5 #18
+R_MOTOR_2 = 6 #27
 R_EN_A = 4
 # Left Motor
-L_MOTOR_1 = 5
-L_MOTOR_2 = 6
+L_MOTOR_1 = 18 #5
+L_MOTOR_2 = 27 #6
 L_EN_B = 13
 
 RIGHT_TURN_MS = 4000 # 4s # To be calibrated
