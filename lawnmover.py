@@ -4,9 +4,12 @@ import RPi.GPIO as GPIO
 from time import sleep
 from gpiozero import DistanceSensor
 import time
+import sys
+
+GPIO.setmode(GPIO.BCM)
 
 # Initialize global variables
-ultrasonic = None
+ultrasonic = DistanceSensor(echo=US_ECHO, trigger=US_TRIGGER, threshold_distance=US_THRESHOLD, max_distance=US_MAX_DISTANCE)
 
 ###############################################################################
 # Boat Movement
@@ -19,6 +22,7 @@ def move_forward():
     GPIO.output(L_MOTOR_1,GPIO.LOW)
 
 def turn_right():
+    print('Turning right')
     starttime = datetime.datetime.now()
     while(datetime.datetime.now() - starttime < datetime.timedelta(milliseconds=RIGHT_TURN_MS)):
         GPIO.output(R_MOTOR_1,GPIO.LOW)
@@ -28,6 +32,7 @@ def turn_right():
         GPIO.output(L_MOTOR_1,GPIO.LOW)
     
 def turn_left():
+    print('Turning left')
     starttime = datetime.datetime.now()
     while(datetime.datetime.now() - starttime < datetime.timedelta(milliseconds=LEFT_TURN_MS)):
         GPIO.output(R_MOTOR_1,GPIO.HIGH)
@@ -56,19 +61,28 @@ def stop():
 ###############################################################################
 
 def obstacle_detected():
-    return False if (ultrasonic.distance < US_THRESHOLD) else True
+    return ultrasonic.distance < US_THRESHOLD
 
 def move_till_obstacle():
+    print('moving forward')
     while (not(obstacle_detected())):
+        sys.stdout.write("\r"+"Distance: "+str(ultrasonic.distance))
+        sys.stdout.flush()
         move_forward()
+    print('\nobstacle detected')
     return
 
 def distance_covered():
     pass
 
 def move_for_width(width):
-    while (distance_covered() < width or not(obstacle_detected())):
+    print('moving forward')
+    starttime = datetime.datetime.now()
+    while (datetime.datetime.now() - starttime < datetime.timedelta(milliseconds=BOAT_WIDTH_MS) ande not(obstacle_detected())):
+        sys.stdout.write("\r"+"Distance: "+str(ultrasonic.distance))
+        sys.stdout.flush()
         move_forward()
+    print('\nobstacle detected')
     return
 
 def lawnmover(width_of_boat: int):
@@ -94,7 +108,14 @@ def setup_boat():
     ultrasonic = DistanceSensor(
         echo=US_ECHO, trigger=US_TRIGGER, 
         threshold_distance=US_THRESHOLD, max_distance=US_MAX_DISTANCE)
+    time.sleep(2)
 
 if __name__ == '__main__':
-    setup_boat()
-    lawnmover(width_of_boat=BOAT_WIDTH)
+    try:
+        # setup_boat()
+        lawnmover(width_of_boat=BOAT_WIDTH)
+    except Exception as e:
+        #GPIO.cleanup()
+        print('GPIO cleanup')
+        raise e
+    

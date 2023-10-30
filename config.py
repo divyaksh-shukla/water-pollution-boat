@@ -22,6 +22,7 @@ US_MAX_DISTANCE = 1 # to be increased to max(length_boat, width_boat)*1.5 in met
 BOAT_WIDTH = 0.1
 BOAT_HEIGHT = 0.1
 BOAT_LENGTH = 0.15
+BOAT_WIDTH_MS = 5000
 
 # Setup the GPIO pins
 
