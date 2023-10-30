@@ -1,7 +1,9 @@
 from config import *
+import datetime
 import RPi.GPIO as GPIO
 from time import sleep
 from gpiozero import DistanceSensor
+import time
 
 # Initialize global variables
 ultrasonic = None
@@ -17,18 +19,22 @@ def move_forward():
     GPIO.output(L_MOTOR_1,GPIO.LOW)
 
 def turn_right():
-    GPIO.output(R_MOTOR_1,GPIO.LOW)
-    GPIO.output(R_MOTOR_2,GPIO.HIGH)
+    starttime = datetime.datetime.now()
+    while(datetime.datetime.now() - starttime < datetime.timedelta(milliseconds=RIGHT_TURN_MS)):
+        GPIO.output(R_MOTOR_1,GPIO.LOW)
+        GPIO.output(R_MOTOR_2,GPIO.HIGH)
 
-    GPIO.output(L_MOTOR_2,GPIO.LOW)
-    GPIO.output(L_MOTOR_1,GPIO.LOW)
+        GPIO.output(L_MOTOR_2,GPIO.LOW)
+        GPIO.output(L_MOTOR_1,GPIO.LOW)
     
 def turn_left():
-    GPIO.output(R_MOTOR_1,GPIO.HIGH)
-    GPIO.output(R_MOTOR_2,GPIO.LOW)
+    starttime = datetime.datetime.now()
+    while(datetime.datetime.now() - starttime < datetime.timedelta(milliseconds=LEFT_TURN_MS)):
+        GPIO.output(R_MOTOR_1,GPIO.HIGH)
+        GPIO.output(R_MOTOR_2,GPIO.LOW)
 
-    GPIO.output(L_MOTOR_2,GPIO.LOW)
-    GPIO.output(L_MOTOR_1,GPIO.LOW)
+        GPIO.output(L_MOTOR_2,GPIO.LOW)
+        GPIO.output(L_MOTOR_1,GPIO.LOW)
     
 def move_back():
     GPIO.output(R_MOTOR_1,GPIO.LOW)
@@ -43,6 +49,7 @@ def stop():
 
     GPIO.output(L_MOTOR_2,GPIO.LOW)
     GPIO.output(L_MOTOR_1,GPIO.LOW)
+    time.sleep(2)
 
 ###############################################################################
 # UltraSonic sensor triggers
